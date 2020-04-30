@@ -3,33 +3,34 @@ import {StyleSheet, Text, View, FlatList, Button, TouchableOpacity} from 'react-
 import { Context,  } from "../context/BlogContext";
 import { Feather } from '@expo/vector-icons';
 
-const IndexScreen = () => {
-  const {state, addBlogPost, removeBlogPost} = useContext(Context);
+const IndexScreen = ({navigation}) => {
+  const {state, removeBlogPost} = useContext(Context);
   return (
     <View>
-      <Text>Index screen!)</Text>
-      <Button title="Add post"
-              onPress={addBlogPost}
-      />
+      <Text>Posts Screen</Text>
       <FlatList
         data={state}
         keyExtractor={(blogPost) => blogPost.title}
         renderItem={({item}) => {
           return(
-            <View style={style.row}>
-              <Text style={style.title}>
-                {item.title} - {item.id}
-              </Text>
-              <TouchableOpacity onPress={() => removeBlogPost(item.id)}>
-                <Feather style={style.icon} name="trash"/>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Post', { id: item.id })}
+            >
+              <View style={style.row}>
+                <Text style={style.title}>
+                  {item.title} - {item.id}
+                </Text>
+                <TouchableOpacity onPress={() => removeBlogPost(item.id)}>
+                  <Feather style={style.icon} name="trash"/>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
           )
         }}
       />
     </View>
   )
-}
+};
 
 const style = StyleSheet.create({
   row: {
