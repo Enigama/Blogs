@@ -19,14 +19,30 @@ const blogReducer = (state, action) => {
       //   ...state.slice(0, idx),
       //   ...state.slice(idx + 1)
       // ];
+
+    case 'EDIT_BLOG_POST':
+      const posEditingPost = state.findIndex(post => post.id === action.payload.id);
+      const editingPost = state.find(post => post.id === action.payload.id);
+      editingPost.title = action.payload.title;
+      editingPost.content = action.payload.content;
+
+      return [
+        ...state.slice(0, posEditingPost),
+        editingPost,
+        ...state.slice(posEditingPost + 1)
+      ];
     default:
       return state;
   }
 };
 
-const addBlogPost = (dispatch) => {
-  return (postContent) => {
-    dispatch({type: 'ADD_BLOG_POST', payload: postContent})
+const addBlogPost = dispatch => {
+  return (title, content, callBack) => {
+    dispatch({type: 'ADD_BLOG_POST', payload: {title, content}});
+    callBack();
+  //  todo if this fun create request add try catch
+  //  return async ()
+  //  await request inside try, catch show some error!
   }
 };
 
@@ -36,11 +52,19 @@ const removeBlogPost = (dispatch) => {
   }
 };
 
+const editBlogPost = dispatch => {
+  return (id, title, content, callBack) => {
+    dispatch({type: 'EDIT_BLOG_POST', payload: {id, title, content}})
+    callBack();
+  }
+};
+
 export const {Context, Provider} = createDataContext(
   blogReducer,
   {
     addBlogPost,
     removeBlogPost,
+    editBlogPost,
   },
   []
 );

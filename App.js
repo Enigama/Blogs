@@ -7,9 +7,10 @@ import {Provider} from "./src/context/BlogContext";
 import IndexScreen from "./src/screens/IndexScreen";
 import ShowScreen from "./src/screens/ShowScreen";
 import CreateScreen from "./src/screens/CreateScreen";
+import EditScreen from "./src/screens/EditScreen";
 
 import {TouchableOpacity} from "react-native";
-import {Feather} from '@expo/vector-icons';
+import {Feather, MaterialIcons} from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
@@ -36,11 +37,26 @@ const App = () => {
         <Stack.Screen
           name="Post"
           component={ShowScreen}
+          options={({navigation, route}) => (
+            {
+              title: 'Blog List',
+              headerRight: () => (
+                <TouchableOpacity onPress={() => navigation.navigate('Edit', {id: route.params.id})}>
+                  <MaterialIcons style={style.addPost} name='mode-edit' />
+                </TouchableOpacity>
+              )
+            }
+          )}
         />
         <Stack.Screen
           name="Create"
           component={CreateScreen}
           options={{title: 'Create Post'}}
+        />
+        <Stack.Screen
+                  name="Edit"
+                  component={EditScreen}
+                  options={{title: 'Edit Post'}}
         />
 
       </Stack.Navigator>

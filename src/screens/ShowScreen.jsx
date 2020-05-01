@@ -14,7 +14,8 @@ const ShowScreen = () => {
       <Text>{blogPost.content}</Text>
     </View>
   )
-}
+};
+
 const style = StyleSheet.create({});
 
 export default ShowScreen;
