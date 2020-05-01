@@ -21,16 +21,7 @@ const blogReducer = (state, action) => {
       // ];
 
     case 'EDIT_BLOG_POST':
-      const posEditingPost = state.findIndex(post => post.id === action.payload.id);
-      const editingPost = state.find(post => post.id === action.payload.id);
-      editingPost.title = action.payload.title;
-      editingPost.content = action.payload.content;
-
-      return [
-        ...state.slice(0, posEditingPost),
-        editingPost,
-        ...state.slice(posEditingPost + 1)
-      ];
+      return state.map(blogPost => blogPost.id === action.payload.id ? action.payload : blogPost);
     default:
       return state;
   }
@@ -39,7 +30,9 @@ const blogReducer = (state, action) => {
 const addBlogPost = dispatch => {
   return (title, content, callBack) => {
     dispatch({type: 'ADD_BLOG_POST', payload: {title, content}});
-    callBack();
+    if (callBack) {
+      callBack();
+    }
   //  todo if this fun create request add try catch
   //  return async ()
   //  await request inside try, catch show some error!
@@ -54,8 +47,11 @@ const removeBlogPost = (dispatch) => {
 
 const editBlogPost = dispatch => {
   return (id, title, content, callBack) => {
+    console.log(id, title, content);
     dispatch({type: 'EDIT_BLOG_POST', payload: {id, title, content}})
-    callBack();
+    if (callBack) {
+      callBack();
+    }
   }
 };
 
@@ -66,5 +62,5 @@ export const {Context, Provider} = createDataContext(
     removeBlogPost,
     editBlogPost,
   },
-  []
+  [{id: 1, title: 'test', content: 'sssss'}]
 );

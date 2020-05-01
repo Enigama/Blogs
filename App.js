@@ -19,7 +19,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Blogs"
+          name="Index"
           options={
             ({navigation}) => (
               {
